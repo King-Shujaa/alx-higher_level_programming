@@ -1,14 +1,25 @@
 #!/usr/bin/node
 
-const request = require('request');
-const fs = require('fs');
-const url = process.argv[2];
-const filePath = process.argv[3];
+import sys
+import requests
 
-request(url, function (err, response, body) {
-  if (err) {
-    console.log(err);
-  } else {
-    fs.writeFile(filePath, body, 'utf-8');
-  }
-});
+def get_webpage_content(url):
+    response = requests.get(url)
+    return response.text
+
+def save_content_to_file(content, file_path):
+    with open(file_path, 'w', encoding='utf-8') as file:
+        file.write(content)
+
+if __name__ == '__main__':
+    if len(sys.argv) < 3:
+        print("Usage: python script.py <url> <file_path>")
+        sys.exit(1)
+
+    url = sys.argv[1]
+    file_path = sys.argv[2]
+
+    content = get_webpage_content(url)
+    save_content_to_file(content, file_path)
+
+    print("Webpage content has been saved to:", file_path)
